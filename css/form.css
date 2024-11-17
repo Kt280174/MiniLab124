@@ -1,5 +1,5 @@
 .form_container {
-  width: 50%;
+  width: 50%; /* Để giữ nguyên trên màn hình lớn */
   height: fit-content;
   padding: 5% 5% 0 5%;
   margin-top: 2%;
@@ -8,15 +8,30 @@
 }
 
 .underlined_text {
-  margin-left: 0;
-  align-items: center;
-  color: #033169;
-  text-decoration: underline;
-  text-decoration-color: #76ead5;
-  text-transform: uppercase;
+  margin-left: 0; /* Giữ nguyên lề trái */
+  align-items: center; /* Nếu cần căn giữa trong flex container */
+  color: #033169; /* Màu chữ */
+  text-decoration: underline; /* Gạch chân chữ */
+  text-decoration-color: #76ead5; /* Màu sắc cho gạch chân */
+  text-transform: uppercase; /* Chuyển chữ thành in hoa */
 }
 
-/* Свойства цкласса при наведении */
+/* Media query cho màn hình nhỏ (điện thoại) */
+@media (max-width: 768px) {
+  .form_container {
+    width: 100%; /* Mở rộng form chiếm toàn bộ chiều rộng màn hình trên điện thoại */
+    padding: 10% 5%; /* Tăng padding cho phù hợp */
+    margin-top: 5%; /* Tăng khoảng cách trên cho phù hợp */
+  }
+
+  /* Thay đổi kích thước chữ cho .underlined_text */
+  .underlined_text {
+    font-size: 16px; /* Kích thước chữ có thể thay đổi trên màn hình nhỏ */
+  }
+}
+
+/* Свойства класса при наведении */
 .underlined_text:hover {
   cursor: pointer;
+  color: #76ead5; /* Thêm hiệu ứng hover với màu thay đổi khi di chuột */
 }

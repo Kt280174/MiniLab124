@@ -1,18 +1,18 @@
-import {setFormValue, submitSignUpForm, validateEmail, validatePassword} from "./utils.js"
+import {setFormValue, submitSignUpForm, validateEmail, validatePassword, validateConfirmPassword, getValidationStatus} from "./utils.js"
 
 
 ////// ДЕМОНСТРАЦИОННЫЙ УЧАСТОК КОДА. На оценку не влияет, исключительно для саморазвития.
 
 // Предлагаю "поиграться" с частями кода ниже, чтобы познакомиться с JS
-// Получаем элемент и меняем его класс, который определеён в библиотеке стилей materialize
-const password = document.getElementById('password');
-password.classList.add("valid")
-password.classList.remove("valid")
+// Получаем элемент и меняем его класс, который определён в библиотеке стилей materialize
+//const password = document.getElementById('password');
+//password.classList.add("valid")
+//password.classList.remove("valid")
 
 // В браузере можно посмотреть, что из себя представляет документ
 // (CTRL+SHIFT+i для открытия консоли и открыть вкладку "консоль", туда будет залогированно значение)
-console.log("Document")
-console.log(document)
+//console.log("Document")
+//console.log(document)
 
 // Если запросить id, которого нет в DOM дереве - вернется undefined
 // => надо быть осторожней: коллега может поменять id вашего элемента и упадёт !ВАШ! код
@@ -34,36 +34,94 @@ console.log(document)
 const first_name_id = 'first_name'
 const last_name_id = 'last_name'
 const password_id = 'password'
+const password_repeat_id = 'password_repeat';
 const email_id = 'email'
 
 const sign_in_link_id = 'sign_in_link'
+const sign_up_link_id = 'sign_up_link'
 const sign_up_form_id = 'sign_up_form'
-// const sign_in_form_id = 'sign_in_form'  // Пригодится
 const sign_up_btn_id = 'sign_up_btn'
 const sign_in_form_id = 'sign_in_form'
 
 
 // Получаем элемент DOM-дерева по id и присваиваем значение аттрибуту oninput
 // oninput вызывается с параметром "event" каждый раз, когда ввод меняется
-// Значение, которое мы присваеваем этому аттрибуту - это функция, определённая в стрелочном стиле
+// Значение, которое мы присваиваем этому аттрибуту - это функция, определённая в стрелочном стиле
 // Гуглить по тегам "события JS", "onchange/oninput HTML", "стрелочные функции JS", ...
 
 const first_name = document.getElementById(first_name_id);
-first_name.oninput = (e) => setFormValue(first_name_id, e.target.value)  // Установить значение без валидации
+first_name.oninput = (e) => {
+  setFormValue(first_name_id, e.target.value)
+  checkForm();
+}  // Установить значение без валидации
+
+const last_name = document.getElementById(last_name_id);
+last_name.oninput = (e) => {
+  setFormValue(last_name_id, e.target.value);
+  checkForm();
+};
 
 const email = document.getElementById(email_id);
-email.oninput = (e) => setFormValue(email_id, e.target.value, validateEmail) // Установить значение с валидацией
+email.oninput = (e) => {
+  setFormValue(email_id, e.target.value, validateEmail)
+  checkForm();
+} // Установить значение с валидацией
 
+const password = document.getElementById(password_id);
+password.oninput = (e) => {
+  setFormValue(password_id, e.target.value, validatePassword);
+  checkForm();
+}
 
+const password_confirm = document.getElementById(password_repeat_id);
+console.log(password_confirm)
+  password_confirm.oninput = (e) => {
+  setFormValue(password_repeat_id, e.target.value, validateConfirmPassword);
+  checkForm();
+}
+
+const onPasswordChange = (e) => {
+  if (!validatePassword(password.value)) {
+    password.classList.remove("valid")
+    password.classList.add("invalid")
+  } else {
+    password.classList.remove("invalid")
+    password.classList.add("valid")
+  }
+}
+password.addEventListener('change', onPasswordChange)
+const onConfirmPasswordChange = (e) => {
+  if (password.value !== password_confirm.value) {
+    password_confirm.classList.remove("valid")
+    password_confirm.classList.add("invalid")
+  } else {
+    password_confirm.classList.remove("invalid")
+    password_confirm.classList.add("valid")
+  }
+}
+
+password_confirm.addEventListener('change', onConfirmPasswordChange)
+
+function checkForm() {
+  const isValid = getValidationStatus();
+  const submitButton = document.getElementById(sign_up_btn_id);
+  submitButton.disabled = !isValid;
+  console.log('Form is valid:', isValid);
+}
 
 // Меняем стили объекта DOM дерева. Это позволяет скрыть форму регистрации и показать форму авторизации
-// Объект формы не исключается из DOM дерева, а просто становистя невидимым
+// Объект формы не исключается из DOM дерева, а просто становится невидимым
 const switch_to_sign_in = document.getElementById(sign_in_link_id);
 switch_to_sign_in.onclick = (e) => {
   document.getElementById(sign_up_form_id).style.display = "none"
   document.getElementById(sign_in_form_id).style.display = ""
 }
 
+const switch_to_sign_up = document.getElementById(sign_up_link_id);
+switch_to_sign_up.onclick = (e) => {
+  document.getElementById(sign_up_form_id).style.display = ""
+  document.getElementById(sign_in_form_id).style.display = "none"
+}
 
 const sign_up_btn = document.getElementById(sign_up_btn_id);
 sign_up_btn.onclick = (e) => {
@@ -72,4 +130,3 @@ sign_up_btn.onclick = (e) => {
   e.preventDefault()
   submitSignUpForm()
 }
-

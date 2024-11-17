@@ -8,7 +8,7 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
-html {
+ html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -346,4 +346,26 @@ template {
 
 [hidden] {
   display: none;
+} 
+/* Media query cho thiết bị di động (dưới 768px) */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px; /* Điều chỉnh kích thước font cho thiết bị di động */
+  }
+
+  body {
+    padding: 10px; /* Thêm padding cho body để không bị chật */
+  }
+
+  h1 {
+    font-size: 1.5em; /* Giảm kích thước font của h1 trên điện thoại */
+  }
+
+  /* Điều chỉnh các phần tử input và textarea */
+  input, textarea {
+    width: 100%; /* Đảm bảo chúng chiếm toàn bộ chiều rộng */
+    padding: 10px; /* Tăng padding để dễ thao tác */
+  }
+
+  /* Các phần tử khác có thể điều chỉnh tương tự */
 }
